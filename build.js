@@ -15,6 +15,8 @@
 //   ---
 //   Paragraphs separated by blank lines. No markdown beyond that.
 //
+// Output is flat: docs/index.html and docs/<slug>.html, so every link also works when a file is opened
+// straight from disk. GitHub Pages serves <slug>.html at /<slug> as well.
 // The index has a hero, then one section per category in CATEGORIES order, with a menu in the header.
 // Inside a section, live projects come first (newest first), then retired ones (newest death first).
 
@@ -78,8 +80,8 @@ const buttons = (links) =>
     ? `<p class="buttons">${links.map((l) => `<a class="btn" href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>`
     : "";
 
-function page({ title, body, depth, nav }) {
-  const base = depth ? "../" : "";
+function page({ title, body, nav }) {
+  const base = "";
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -94,7 +96,7 @@ function page({ title, body, depth, nav }) {
 </head>
 <body>
 <header class="top">
-  <a class="brand" href="${base || "./"}">${esc(NAME)}</a>
+  <a class="brand" href="index.html">${esc(NAME)}</a>
   <nav>${nav}</nav>
 </header>
 <main>
@@ -111,7 +113,7 @@ ${body}
 
 function card(p) {
   return `  <li class="card cat-${p.category}${p.live ? "" : " retired"}">
-    <a class="card-link" href="${p.slug}/">
+    <a class="card-link" href="${p.slug}.html">
       <span class="when">${esc(when(p))}</span>
       <span class="card-title">${esc(p.title)}</span>
       <span class="card-sum">${esc(p.summary)}</span>
@@ -152,7 +154,7 @@ function project(p) {
   const cat = CATEGORIES.find((c) => c.key === p.category);
   const paras = p.paragraphs.map((t) => `<p>${esc(t)}</p>`).join("\n");
   return `<article class="cat-${p.category}">
-<p class="crumb"><a href="../#${cat.key}">${esc(cat.title)}</a></p>
+<p class="crumb"><a href="index.html#${cat.key}">${esc(cat.title)}</a></p>
 <h1>${esc(p.title)}</h1>
 <p class="lede">${esc(p.summary)}</p>
 <dl class="facts">
@@ -176,9 +178,9 @@ const all = fs
 const order = (a, b) =>
   (b.live ? 1 : 0) - (a.live ? 1 : 0) || (b.live ? b.born - a.born : b.died - a.died) || a.title.localeCompare(b.title);
 
-const navFor = (base) =>
+const navFor = (prefix) =>
   CATEGORIES.filter((c) => all.some((p) => p.category === c.key))
-    .map((c) => `<a href="${base}#${c.key}">${esc(c.title)}</a>`)
+    .map((c) => `<a href="${prefix}#${c.key}">${esc(c.title)}</a>`)
     .join("\n");
 
 fs.rmSync(OUT, { recursive: true, force: true });
@@ -190,18 +192,15 @@ fs.writeFileSync(
   path.join(OUT, "index.html"),
   page({
     title: NAME,
-    depth: 0,
     nav: navFor(""),
     body: `${hero(all)}\n${CATEGORIES.map((c) => section(c, all.filter((p) => p.category === c.key).sort(order))).join("\n")}`,
   })
 );
 
 for (const p of all) {
-  const dir = path.join(OUT, p.slug);
-  fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(
-    path.join(dir, "index.html"),
-    page({ title: `${p.title} · ${NAME}`, depth: 1, nav: navFor("../"), body: project(p) })
+    path.join(OUT, `${p.slug}.html`),
+    page({ title: `${p.title} · ${NAME}`, nav: navFor("index.html"), body: project(p) })
   );
 }
 

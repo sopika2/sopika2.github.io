@@ -15,7 +15,7 @@ A small portfolio: data tools, web work and game mods, one short page each, with
 node build.js
 ```
 
-writes everything into `docs/`. Commit `docs/` along with the source; GitHub Pages serves it as is, with no build step.
+writes everything into `docs/` as flat files (`index.html`, `<slug>.html`), so you can also open `docs/index.html` straight from disk and every link works. Commit `docs/` along with the source; GitHub Pages serves it as is, with no build step, and also answers `/<slug>` without the extension.
 
 ## Hosting on GitHub Pages
 
