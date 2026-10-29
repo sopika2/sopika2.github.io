@@ -1,6 +1,7 @@
 ---
 title: Persistent Corpses
 category: modding
+tech: Cyberpunk 2077, REDscript
 born: 2024
 status: live
 summary: A Cyberpunk 2077 mod so bodies stay where they fell instead of fading out.

@@ -1,6 +1,7 @@
 ---
 title: NeilaReacts
 category: web
+tech: Node, HTML, JavaScript
 born: 2025
 died: 2026
 summary: A self-hosted media server for films and shows, retired.

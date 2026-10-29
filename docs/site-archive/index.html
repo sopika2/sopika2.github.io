@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>Site Archive · Saekoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -15,16 +18,26 @@
 <a href="../#modding">Modding</a></nav>
 </header>
 <main>
+<article class="cat-data">
 <p class="crumb"><a href="../#data">Data tools</a></p>
 <h1>Site Archive</h1>
-<p class="when">since 2026</p>
 <p class="lede">One command documents a whole website before a redesign: text, screenshots, sitemap, broken links.</p>
+<dl class="facts">
+  <div><dt>Status</dt><dd>Live</dd></div>
+  <div><dt>Years</dt><dd>2026 – now</dd></div>
+  <div><dt>Category</dt><dd>Data tools</dd></div>
+  <div class="wide"><dt>Built with</dt><dd><ul class="tags"><li>Python</li><li>Playwright</li><li>python-docx</li><li>openpyxl</li></ul></dd></div>
+</dl>
+<div class="prose">
 <p>A command-line tool for the moment before a website is rebuilt and nobody has a record of what was there. Point it at a site and it produces a Word document with every page's text in reading order, full-page screenshot PDFs for desktop and mobile, an Excel sitemap with every page's title, URL, parent, depth and word count, a broken-link report with the pages that link to each dead URL, and an offline HTML index tying it all together.</p>
 <p>I offer this as a website audit service for site owners and agencies planning a redesign: a content inventory, a broken-link report and page screenshots, delivered in one to four days depending on the size of the site.</p>
 <p>Python and Playwright. The largest run so far covered 194 pages and found four broken links.</p>
-<p class="links"><a href="https://github.com/sopika2/site-archive">source on GitHub</a></p>
+</div>
+<p class="buttons"><a class="btn" href="https://github.com/sopika2/site-archive">source on GitHub</a></p>
+</article>
 </main>
 <footer>
+  <p class="foot-text">Available for freelance work. Find me on</p>
   <p class="links"><a href="https://github.com/sopika2">GitHub</a>
 <a href="https://apify.com/saekoto">Apify Store</a></p>
 </footer>

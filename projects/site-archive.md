@@ -1,6 +1,7 @@
 ---
 title: Site Archive
 category: data
+tech: Python, Playwright, python-docx, openpyxl
 born: 2026
 status: live
 summary: One command documents a whole website before a redesign: text, screenshots, sitemap, broken links.

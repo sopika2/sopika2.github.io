@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>Saekoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,68 +18,105 @@
 <a href="#modding">Modding</a></nav>
 </header>
 <main>
+<section class="hero">
+<p class="eyebrow">Web data tools, self-hosted apps and game mods.</p>
 <h1>Saekoto</h1>
-<p class="lede">I build web data tools, small self-hosted web apps and game mods. Available for freelance work.</p>
-<section id="data">
-<h2>Data tools</h2>
-<p class="blurb">Checkers, audits and collection jobs for people who need clean rows, not raw pages.</p>
-<ul class="list">
-  <li>
-    <a href="google-ads-domain-checker/">Google Ads Domain Checker</a>
-    <span class="when">since 2026</span>
-    <p>Check a list of domains for live Google Ads and get one row per domain, on the Apify Store.</p>
+<p class="lede">I build small, sharp tools: bulk checkers that turn a list of domains into clean rows, audits that document a whole website in one run, apps I host myself, and mods people still download. Available for freelance work.</p>
+<p class="buttons"><a class="btn" href="https://github.com/sopika2">GitHub</a>
+<a class="btn" href="https://apify.com/saekoto">Apify Store</a></p>
+<ul class="stats"><li><strong>7</strong><span>live projects</span></li><li><strong>2</strong><span>data tools</span></li><li><strong>3</strong><span>web work</span></li><li><strong>3</strong><span>modding</span></li></ul>
+</section>
+<section id="data" class="cat-data">
+<div class="sec-head">
+  <h2>Data tools</h2>
+  <p class="blurb">Checkers, audits and collection jobs for people who need clean rows, not raw pages.</p>
+</div>
+<ul class="grid">
+  <li class="card cat-data">
+    <a class="card-link" href="google-ads-domain-checker/">
+      <span class="when">since 2026</span>
+      <span class="card-title">Google Ads Domain Checker</span>
+      <span class="card-sum">Check a list of domains for live Google Ads and get one row per domain, on the Apify Store.</span>
+    </a>
+    <ul class="tags"><li>TypeScript</li><li>Apify SDK</li><li>got-scraping</li><li>vitest</li></ul>
   </li>
-  <li>
-    <a href="site-archive/">Site Archive</a>
-    <span class="when">since 2026</span>
-    <p>One command documents a whole website before a redesign: text, screenshots, sitemap, broken links.</p>
+  <li class="card cat-data">
+    <a class="card-link" href="site-archive/">
+      <span class="when">since 2026</span>
+      <span class="card-title">Site Archive</span>
+      <span class="card-sum">One command documents a whole website before a redesign: text, screenshots, sitemap, broken links.</span>
+    </a>
+    <ul class="tags"><li>Python</li><li>Playwright</li><li>python-docx</li><li>openpyxl</li></ul>
   </li>
 </ul>
 </section>
-<section id="web">
-<h2>Web work</h2>
-<p class="blurb">Self-hosted apps and sites, built for one user and kept running.</p>
-<ul class="list">
-  <li>
-    <a href="neilareads/">NeilaReads</a>
-    <span class="when">since 2026</span>
-    <p>A self-hosted manga and ebook reader that runs in the browser and installs like an app.</p>
+<section id="web" class="cat-web">
+<div class="sec-head">
+  <h2>Web work</h2>
+  <p class="blurb">Self-hosted apps and sites, built for one user and kept running.</p>
+</div>
+<ul class="grid">
+  <li class="card cat-web">
+    <a class="card-link" href="neilareads/">
+      <span class="when">since 2026</span>
+      <span class="card-title">NeilaReads</span>
+      <span class="card-sum">A self-hosted manga and ebook reader that runs in the browser and installs like an app.</span>
+    </a>
+    <ul class="tags"><li>Node</li><li>Service Worker</li><li>EPUB</li><li>CBZ</li></ul>
   </li>
-  <li>
-    <a href="niijima-network/">Niijima Network</a>
-    <span class="when">since 2025</span>
-    <p>A set of self-hosted personal sites on one domain, sharing one design package and a live status page.</p>
+  <li class="card cat-web">
+    <a class="card-link" href="niijima-network/">
+      <span class="when">since 2025</span>
+      <span class="card-title">Niijima Network</span>
+      <span class="card-sum">A set of self-hosted personal sites on one domain, sharing one design package and a live status page.</span>
+    </a>
+    <ul class="tags"><li>Node</li><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
   </li>
-  <li class="retired">
-    <a href="neilareacts/">NeilaReacts</a>
-    <span class="when">2025 – 2026, retired</span>
-    <p>A self-hosted media server for films and shows, retired.</p>
+  <li class="card cat-web retired">
+    <a class="card-link" href="neilareacts/">
+      <span class="when">2025 – 2026, retired</span>
+      <span class="card-title">NeilaReacts</span>
+      <span class="card-sum">A self-hosted media server for films and shows, retired.</span>
+    </a>
+    <ul class="tags"><li>Node</li><li>HTML</li><li>JavaScript</li></ul>
   </li>
 </ul>
 </section>
-<section id="modding">
-<h2>Modding</h2>
-<p class="blurb">Game mods published on Nexus Mods under the name saekoto.</p>
-<ul class="list">
-  <li>
-    <a href="more-colours/">More Colours for How To Fish</a>
-    <span class="when">since 2024</span>
-    <p>Extra colour options for How To Fish. It does one thing.</p>
+<section id="modding" class="cat-modding">
+<div class="sec-head">
+  <h2>Modding</h2>
+  <p class="blurb">Game mods published on Nexus Mods under the name saekoto.</p>
+</div>
+<ul class="grid">
+  <li class="card cat-modding">
+    <a class="card-link" href="more-colours/">
+      <span class="when">since 2024</span>
+      <span class="card-title">More Colours for How To Fish</span>
+      <span class="card-sum">Extra colour options for How To Fish. It does one thing.</span>
+    </a>
+    <ul class="tags"><li>How To Fish</li></ul>
   </li>
-  <li>
-    <a href="neptune-mod-menu/">Neptune Mod Menu</a>
-    <span class="when">since 2024</span>
-    <p>An in-game mod menu for How To Fish with toggles the game does not offer.</p>
+  <li class="card cat-modding">
+    <a class="card-link" href="neptune-mod-menu/">
+      <span class="when">since 2024</span>
+      <span class="card-title">Neptune Mod Menu</span>
+      <span class="card-sum">An in-game mod menu for How To Fish with toggles the game does not offer.</span>
+    </a>
+    <ul class="tags"><li>How To Fish</li><li>Lua</li></ul>
   </li>
-  <li>
-    <a href="persistent-corpses/">Persistent Corpses</a>
-    <span class="when">since 2024</span>
-    <p>A Cyberpunk 2077 mod so bodies stay where they fell instead of fading out.</p>
+  <li class="card cat-modding">
+    <a class="card-link" href="persistent-corpses/">
+      <span class="when">since 2024</span>
+      <span class="card-title">Persistent Corpses</span>
+      <span class="card-sum">A Cyberpunk 2077 mod so bodies stay where they fell instead of fading out.</span>
+    </a>
+    <ul class="tags"><li>Cyberpunk 2077</li><li>REDscript</li></ul>
   </li>
 </ul>
 </section>
 </main>
 <footer>
+  <p class="foot-text">Available for freelance work. Find me on</p>
   <p class="links"><a href="https://github.com/sopika2">GitHub</a>
 <a href="https://apify.com/saekoto">Apify Store</a></p>
 </footer>

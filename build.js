@@ -6,15 +6,16 @@
 //   ---
 //   title: Google Ads Domain Checker
 //   category: data           (one of the keys in CATEGORIES below)
+//   tech: TypeScript, Apify SDK
 //   born: 2026
 //   status: live             (omit for a retired project; then give died:)
 //   died: 2026
-//   summary: One sentence shown in the list.
+//   summary: One sentence shown on the card.
 //   link: on the Apify Store | https://apify.com/...
 //   ---
 //   Paragraphs separated by blank lines. No markdown beyond that.
 //
-// The index has one section per category, in CATEGORIES order, with a menu at the top.
+// The index has a hero, then one section per category in CATEGORIES order, with a menu in the header.
 // Inside a section, live projects come first (newest first), then retired ones (newest death first).
 
 const fs = require("fs");
@@ -25,8 +26,9 @@ const SRC = path.join(ROOT, "projects");
 const OUT = path.join(ROOT, "docs");
 
 const NAME = "Saekoto";
+const TAGLINE = "Web data tools, self-hosted apps and game mods.";
 const INTRO =
-  "I build web data tools, small self-hosted web apps and game mods. Available for freelance work.";
+  "I build small, sharp tools: bulk checkers that turn a list of domains into clean rows, audits that document a whole website in one run, apps I host myself, and mods people still download. Available for freelance work.";
 const CATEGORIES = [
   { key: "data", title: "Data tools", blurb: "Checkers, audits and collection jobs for people who need clean rows, not raw pages." },
   { key: "web", title: "Web work", blurb: "Self-hosted apps and sites, built for one user and kept running." },
@@ -61,14 +63,20 @@ function parse(file) {
   if (!CATEGORIES.some((c) => c.key === meta.category)) throw new Error(`${file}: unknown category ${meta.category}`);
   const live = meta.status === "live";
   if (!live && !meta.died) throw new Error(`${file}: needs died: or status: live`);
-  return { slug, live, ...meta, paragraphs };
+  const tech = (meta.tech || "").split(",").map((s) => s.trim()).filter(Boolean);
+  return { slug, live, ...meta, tech, paragraphs };
 }
 
 const when = (p) =>
   p.live ? `since ${p.born}` : p.born === p.died ? `${p.born}, retired` : `${p.born} – ${p.died}, retired`;
 
-const linkRow = (links, cls) =>
-  links.length ? `<p class="${cls}">${links.map((l) => `<a href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>` : "";
+const tags = (list, extra = "") =>
+  list.length ? `<ul class="tags${extra}">${list.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : "";
+
+const buttons = (links) =>
+  links.length
+    ? `<p class="buttons">${links.map((l) => `<a class="btn" href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>`
+    : "";
 
 function page({ title, body, depth, nav }) {
   const base = depth ? "../" : "";
@@ -79,6 +87,9 @@ function page({ title, body, depth, nav }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>${esc(title)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${base}style.css">
 </head>
 <body>
@@ -90,41 +101,71 @@ function page({ title, body, depth, nav }) {
 ${body}
 </main>
 <footer>
-  ${linkRow(CONTACT, "links")}
+  <p class="foot-text">Available for freelance work. Find me on</p>
+  <p class="links">${CONTACT.map((l) => `<a href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>
 </footer>
 </body>
 </html>
 `;
 }
 
-function entry(p) {
-  return `  <li${p.live ? "" : ' class="retired"'}>
-    <a href="${p.slug}/">${esc(p.title)}</a>
-    <span class="when">${esc(when(p))}</span>
-    <p>${esc(p.summary)}</p>
+function card(p) {
+  return `  <li class="card cat-${p.category}${p.live ? "" : " retired"}">
+    <a class="card-link" href="${p.slug}/">
+      <span class="when">${esc(when(p))}</span>
+      <span class="card-title">${esc(p.title)}</span>
+      <span class="card-sum">${esc(p.summary)}</span>
+    </a>
+    ${tags(p.tech)}
   </li>`;
 }
 
 function section(cat, items) {
   if (!items.length) return "";
-  return `<section id="${cat.key}">
-<h2>${esc(cat.title)}</h2>
-<p class="blurb">${esc(cat.blurb)}</p>
-<ul class="list">
-${items.map(entry).join("\n")}
+  return `<section id="${cat.key}" class="cat-${cat.key}">
+<div class="sec-head">
+  <h2>${esc(cat.title)}</h2>
+  <p class="blurb">${esc(cat.blurb)}</p>
+</div>
+<ul class="grid">
+${items.map(card).join("\n")}
 </ul>
+</section>`;
+}
+
+function hero(all) {
+  const live = all.filter((p) => p.live).length;
+  const stats = [
+    { n: live, label: "live projects" },
+    ...CATEGORIES.map((c) => ({ n: all.filter((p) => p.category === c.key).length, label: c.title.toLowerCase() })),
+  ];
+  return `<section class="hero">
+<p class="eyebrow">${esc(TAGLINE)}</p>
+<h1>${esc(NAME)}</h1>
+<p class="lede">${esc(INTRO)}</p>
+${buttons(CONTACT)}
+<ul class="stats">${stats.map((s) => `<li><strong>${s.n}</strong><span>${esc(s.label)}</span></li>`).join("")}</ul>
 </section>`;
 }
 
 function project(p) {
   const cat = CATEGORIES.find((c) => c.key === p.category);
   const paras = p.paragraphs.map((t) => `<p>${esc(t)}</p>`).join("\n");
-  return `<p class="crumb"><a href="../#${cat.key}">${esc(cat.title)}</a></p>
+  return `<article class="cat-${p.category}">
+<p class="crumb"><a href="../#${cat.key}">${esc(cat.title)}</a></p>
 <h1>${esc(p.title)}</h1>
-<p class="when">${esc(when(p))}</p>
 <p class="lede">${esc(p.summary)}</p>
+<dl class="facts">
+  <div><dt>Status</dt><dd>${p.live ? "Live" : "Retired"}</dd></div>
+  <div><dt>Years</dt><dd>${esc(p.live ? `${p.born} – now` : p.born === p.died ? p.born : `${p.born} – ${p.died}`)}</dd></div>
+  <div><dt>Category</dt><dd>${esc(cat.title)}</dd></div>
+  ${p.tech.length ? `<div class="wide"><dt>Built with</dt><dd>${tags(p.tech)}</dd></div>` : ""}
+</dl>
+<div class="prose">
 ${paras}
-${linkRow(p.links, "links")}`;
+</div>
+${buttons(p.links)}
+</article>`;
 }
 
 const all = fs
@@ -151,9 +192,7 @@ fs.writeFileSync(
     title: NAME,
     depth: 0,
     nav: navFor(""),
-    body: `<h1>${esc(NAME)}</h1>\n<p class="lede">${esc(INTRO)}</p>\n${CATEGORIES.map((c) =>
-      section(c, all.filter((p) => p.category === c.key).sort(order))
-    ).join("\n")}`,
+    body: `${hero(all)}\n${CATEGORIES.map((c) => section(c, all.filter((p) => p.category === c.key).sort(order))).join("\n")}`,
   })
 );
 

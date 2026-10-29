@@ -1,6 +1,7 @@
 ---
 title: Niijima Network
 category: web
+tech: Node, HTML, CSS, JavaScript
 born: 2025
 status: live
 summary: A set of self-hosted personal sites on one domain, sharing one design package and a live status page.
