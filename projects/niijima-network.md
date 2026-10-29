@@ -2,7 +2,7 @@
 title: Niijima Network
 category: web
 tech: Node, HTML, CSS, JavaScript
-born: 2025
+born: 2026
 status: live
 summary: A set of self-hosted personal sites on one domain, sharing one design package and a live status page.
 link: landing page on GitHub | https://github.com/sopika2/Project-Niijima-landing-page

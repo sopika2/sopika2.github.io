@@ -2,7 +2,7 @@
 title: NeilaReads
 category: web
 tech: Node, Service Worker, EPUB, CBZ
-born: 2026
+born: 2025
 status: live
 summary: A self-hosted manga and ebook reader that runs in the browser and installs like an app.
 ---

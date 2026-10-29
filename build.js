@@ -117,8 +117,8 @@ function card(p) {
       <span class="when">${esc(when(p))}</span>
       <span class="card-title">${esc(p.title)}</span>
       <span class="card-sum">${esc(p.summary)}</span>
+      ${tags(p.tech)}
     </a>
-    ${tags(p.tech)}
   </li>`;
 }
 
