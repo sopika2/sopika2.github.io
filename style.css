@@ -1,4 +1,4 @@
-/* Project Graveyard — from the design system tokens */
+/* Saekoto — from the Project Graveyard design system tokens */
 :root {
   --bg: #ffffff;
   --text: #1a1a1a;
@@ -26,6 +26,7 @@ body { margin: 0; }
 main { max-width: 640px; margin: 0 auto; padding: var(--space-4) var(--space-3); }
 
 h1 { font-size: 28px; line-height: 36px; font-weight: 600; margin: 0 0 var(--space-1); }
+h2 { font-size: 13px; line-height: 18px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin: var(--space-4) 0 0; }
 p { font-size: 16px; line-height: 24px; margin: 0 0 var(--space-2); }
 .muted { color: var(--muted); }
 .small { font-size: 13px; line-height: 18px; color: var(--muted); margin: 0 0 var(--space-1); }
@@ -34,11 +35,11 @@ a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; 
 a:hover, a:focus-visible { text-decoration-thickness: 2px; }
 a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
-.list { list-style: none; margin: var(--space-3) 0 0; padding: 0; }
+.list { list-style: none; margin: var(--space-2) 0 0; padding: 0; }
 .list li { padding: var(--space-2) 0; border-top: 1px solid var(--rule); }
 .list li:first-child { border-top: 0; }
 .list a { font-size: 18px; line-height: 26px; font-weight: 600; }
 .list p { margin: var(--space-1) 0 0; }
 
-.links { margin-top: var(--space-3); }
+.links { margin-top: var(--space-2); }
 .links a { margin-right: var(--space-2); }

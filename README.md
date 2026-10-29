@@ -1,11 +1,12 @@
-# Project Graveyard
+# Saekoto — projects site
 
-The site at projects.niijimasisters.com: a plain list of dead projects, one short page each.
+A plain portfolio: what I am working on now, then the projects that are finished or dead, one short page each. Served by GitHub Pages from the `docs/` folder.
 
 ## Editing
 
-- One file per project in `projects/<slug>.md`. The front matter holds `title`, `born`, `died`, `summary` and any number of `link: label | url` lines. The body is paragraphs separated by blank lines; nothing else is rendered.
-- The list is ordered by `died`, newest first.
+- One file per project in `projects/<slug>.md`. The front matter holds `title`, `born`, `summary`, either `status: live` or `died: <year>`, and any number of `link: label | url` lines. The body is paragraphs separated by blank lines; nothing else is rendered.
+- Live projects are listed under "Now", newest first. The rest go under "Earlier", newest death first.
+- The name, intro sentence and contact links are at the top of `build.js`.
 - The look comes from `style.css`, which mirrors the Project Graveyard design system.
 
 ## Building
@@ -14,12 +15,12 @@ The site at projects.niijimasisters.com: a plain list of dead projects, one shor
 node build.js
 ```
 
-writes everything into `dist/`. No dependencies.
+writes everything into `docs/`. Commit `docs/` along with the source; GitHub Pages serves it as is, with no build step.
 
-## Deploying on Cloudflare Pages
+## Hosting on GitHub Pages
 
-Connect this repository, set the build command to `node build.js` and the output directory to `dist`, then add `projects.niijimasisters.com` as a custom domain.
+Push this repository to GitHub as `<username>.github.io`, then in Settings → Pages choose "Deploy from a branch", branch `main`, folder `/docs`. The site is live at `https://<username>.github.io/` a minute later. No domain or hosting cost.
 
 ## Placeholders to correct
 
-Years, summaries and causes of death were written from memory as a first draft. Check every file in `projects/` before publishing. The three Nexus mods and NeilaReacts have no links yet; add `link:` lines when you have the URLs.
+The years, summaries and causes of death of the earlier projects were written from memory as a first draft. Check every file in `projects/` before publishing. The three Nexus mods and NeilaReacts have no links yet; add `link:` lines when you have the URLs. Add an email or Upwork link to `CONTACT` in `build.js` if you want one on the page.

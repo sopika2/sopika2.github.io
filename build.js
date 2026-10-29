@@ -1,28 +1,34 @@
-// Builds the static site into dist/ from projects/*.md. No dependencies.
+// Builds the static site into docs/ (served by GitHub Pages) from projects/*.md. No dependencies.
 // Run: node build.js
 //
 // Each projects/<slug>.md looks like:
 //
 //   ---
-//   title: NeilaReacts
-//   born: 2025
+//   title: Google Ads Domain Checker
+//   born: 2026
+//   status: live            (omit for a finished or dead project; then give died:)
 //   died: 2026
 //   summary: One sentence shown in the list.
-//   link: source on GitHub | https://github.com/...
-//   link: the mod on Nexus | https://www.nexusmods.com/...
+//   link: on the Apify Store | https://apify.com/...
 //   ---
 //   Paragraphs separated by blank lines. No markdown beyond that.
 //
-// Entries are listed newest death first, then by title.
+// Live projects are listed first under "Now", newest first; the rest under "Earlier", newest death first.
 
 const fs = require("fs");
 const path = require("path");
 
 const ROOT = __dirname;
 const SRC = path.join(ROOT, "projects");
-const OUT = path.join(ROOT, "dist");
-const SITE = "Project Graveyard";
-const INTRO = "Projects I built and no longer use. All of them are dead. Each one has a short page.";
+const OUT = path.join(ROOT, "docs");
+
+const NAME = "Saekoto";
+const INTRO =
+  "I build web data tools: bulk checkers, site audits, one-off collection and reporting jobs. Available for freelance work.";
+const CONTACT = [
+  { label: "GitHub", url: "https://github.com/sopika2" },
+  { label: "Apify Store", url: "https://apify.com/saekoto" },
+];
 
 const esc = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -44,11 +50,13 @@ function parse(file) {
   }
   const paragraphs = m[2].split(/\n\s*\n/).map((p) => p.replace(/\n/g, " ").trim()).filter(Boolean);
   const slug = path.basename(file, ".md");
-  for (const k of ["title", "born", "died", "summary"]) if (!meta[k]) throw new Error(`${file}: missing ${k}`);
-  return { slug, ...meta, paragraphs };
+  for (const k of ["title", "born", "summary"]) if (!meta[k]) throw new Error(`${file}: missing ${k}`);
+  const live = meta.status === "live";
+  if (!live && !meta.died) throw new Error(`${file}: needs died: or status: live`);
+  return { slug, live, ...meta, paragraphs };
 }
 
-const years = (p) => (p.born === p.died ? p.born : `${p.born} – ${p.died}`);
+const years = (p) => (p.live ? `${p.born} –` : p.born === p.died ? p.born : `${p.born} – ${p.died}`);
 
 function page({ title, body, depth }) {
   const base = depth ? "../" : "";
@@ -78,12 +86,17 @@ function entry(p) {
   </li>`;
 }
 
+function list(heading, items) {
+  if (!items.length) return "";
+  return `<h2>${esc(heading)}</h2>\n<ul class="list">\n${items.map(entry).join("\n")}\n</ul>`;
+}
+
 function project(p) {
   const paras = p.paragraphs.map((t) => `<p>${esc(t)}</p>`).join("\n");
   const links = p.links.length
     ? `<p class="links">${p.links.map((l) => `<a href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>`
     : "";
-  return `<p class="small"><a href="../">${esc(SITE)}</a></p>
+  return `<p class="small"><a href="../">${esc(NAME)}</a></p>
 <h1>${esc(p.title)}</h1>
 <p class="small">${esc(years(p))}</p>
 <p class="muted">${esc(p.summary)}</p>
@@ -91,29 +104,33 @@ ${paras}
 ${links}`;
 }
 
-const projects = fs
+const all = fs
   .readdirSync(SRC)
   .filter((f) => f.endsWith(".md"))
-  .map((f) => parse(path.join(SRC, f)))
-  .sort((a, b) => b.died - a.died || a.title.localeCompare(b.title));
+  .map((f) => parse(path.join(SRC, f)));
+const live = all.filter((p) => p.live).sort((a, b) => b.born - a.born || a.title.localeCompare(b.title));
+const past = all.filter((p) => !p.live).sort((a, b) => b.died - a.died || a.title.localeCompare(b.title));
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 fs.copyFileSync(path.join(ROOT, "style.css"), path.join(OUT, "style.css"));
+fs.writeFileSync(path.join(OUT, ".nojekyll"), "");
+
+const contact = `<p class="links">${CONTACT.map((l) => `<a href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>`;
 
 fs.writeFileSync(
   path.join(OUT, "index.html"),
   page({
-    title: SITE,
+    title: NAME,
     depth: 0,
-    body: `<h1>${esc(SITE)}</h1>\n<p class="muted">${esc(INTRO)}</p>\n<ul class="list">\n${projects.map(entry).join("\n")}\n</ul>`,
+    body: `<h1>${esc(NAME)}</h1>\n<p class="muted">${esc(INTRO)}</p>\n${contact}\n${list("Now", live)}\n${list("Earlier", past)}`,
   })
 );
 
-for (const p of projects) {
+for (const p of all) {
   const dir = path.join(OUT, p.slug);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, "index.html"), page({ title: `${p.title} · ${SITE}`, depth: 1, body: project(p) }));
+  fs.writeFileSync(path.join(dir, "index.html"), page({ title: `${p.title} · ${NAME}`, depth: 1, body: project(p) }));
 }
 
-console.log(`built ${projects.length} projects into dist/`);
+console.log(`built ${live.length} live and ${past.length} past projects into docs/`);
