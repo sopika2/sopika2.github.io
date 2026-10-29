@@ -37,6 +37,8 @@ const CATEGORIES = [
   { key: "modding", title: "Modding", blurb: "Game mods published on Nexus Mods under the name saekoto." },
 ];
 const CONTACT = [
+  { label: "Email me", url: "mailto:saekoto@niijimasisters.com" },
+  { label: "Hire me on Upwork", url: "https://www.upwork.com/freelancers/~01c4aba6ba5184e3e6" },
   { label: "GitHub", url: "https://github.com/sopika2" },
   { label: "Apify Store", url: "https://apify.com/saekoto" },
 ];
@@ -103,7 +105,7 @@ function page({ title, body, nav }) {
 ${body}
 </main>
 <footer>
-  <p class="foot-text">Available for freelance work. Find me on</p>
+  <p class="foot-text">Available for freelance work.</p>
   <p class="links">${CONTACT.map((l) => `<a href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>
 </footer>
 </body>
