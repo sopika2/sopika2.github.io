@@ -5,6 +5,7 @@ tech: Cyberpunk 2077, Gameplay
 born: 2026
 status: live
 summary: A Cyberpunk 2077 movement mod: slide sideways, keep your sprint through slides and dashes, aim without slowing down.
+link: on Nexus Mods | https://www.nexusmods.com/cyberpunk2077/mods/36325
 ---
 Movement in Cyberpunk 2077 keeps interrupting itself: a slide stops your sprint, a dash drops you to a walk, aiming slows you down, and every landing stuns you for a moment. Momentum removes those interruptions so one motion flows into the next.
 

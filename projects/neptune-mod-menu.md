@@ -5,6 +5,7 @@ tech: How To Fish, Lua
 born: 2026
 status: live
 summary: An in-game mod menu for How To Fish with toggles the game does not offer.
+link: on Nexus Mods | https://www.nexusmods.com/howtofish/mods/71
 ---
 An in-game menu for How To Fish with toggles and tweaks that the game does not offer on its own.
 
