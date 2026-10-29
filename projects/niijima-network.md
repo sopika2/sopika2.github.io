@@ -1,5 +1,6 @@
 ---
 title: Niijima Network
+category: web
 born: 2025
 status: live
 summary: A set of self-hosted personal sites on one domain, sharing one design package and a live status page.

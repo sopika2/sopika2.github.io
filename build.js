@@ -5,15 +5,17 @@
 //
 //   ---
 //   title: Google Ads Domain Checker
+//   category: data           (one of the keys in CATEGORIES below)
 //   born: 2026
-//   status: live            (omit for a finished or dead project; then give died:)
+//   status: live             (omit for a retired project; then give died:)
 //   died: 2026
 //   summary: One sentence shown in the list.
 //   link: on the Apify Store | https://apify.com/...
 //   ---
 //   Paragraphs separated by blank lines. No markdown beyond that.
 //
-// Live projects are listed first under "Shipped", newest first; the rest under "Shelved", newest death first.
+// The index has one section per category, in CATEGORIES order, with a menu at the top.
+// Inside a section, live projects come first (newest first), then retired ones (newest death first).
 
 const fs = require("fs");
 const path = require("path");
@@ -24,7 +26,12 @@ const OUT = path.join(ROOT, "docs");
 
 const NAME = "Saekoto";
 const INTRO =
-  "I build web data tools: bulk checkers, site audits, one-off collection and reporting jobs. Available for freelance work.";
+  "I build web data tools, small self-hosted web apps and game mods. Available for freelance work.";
+const CATEGORIES = [
+  { key: "data", title: "Data tools", blurb: "Checkers, audits and collection jobs for people who need clean rows, not raw pages." },
+  { key: "web", title: "Web work", blurb: "Self-hosted apps and sites, built for one user and kept running." },
+  { key: "modding", title: "Modding", blurb: "Game mods published on Nexus Mods under the name saekoto." },
+];
 const CONTACT = [
   { label: "GitHub", url: "https://github.com/sopika2" },
   { label: "Apify Store", url: "https://apify.com/saekoto" },
@@ -50,15 +57,20 @@ function parse(file) {
   }
   const paragraphs = m[2].split(/\n\s*\n/).map((p) => p.replace(/\n/g, " ").trim()).filter(Boolean);
   const slug = path.basename(file, ".md");
-  for (const k of ["title", "born", "summary"]) if (!meta[k]) throw new Error(`${file}: missing ${k}`);
+  for (const k of ["title", "category", "born", "summary"]) if (!meta[k]) throw new Error(`${file}: missing ${k}`);
+  if (!CATEGORIES.some((c) => c.key === meta.category)) throw new Error(`${file}: unknown category ${meta.category}`);
   const live = meta.status === "live";
   if (!live && !meta.died) throw new Error(`${file}: needs died: or status: live`);
   return { slug, live, ...meta, paragraphs };
 }
 
-const years = (p) => (p.live ? `${p.born} –` : p.born === p.died ? p.born : `${p.born} – ${p.died}`);
+const when = (p) =>
+  p.live ? `since ${p.born}` : p.born === p.died ? `${p.born}, retired` : `${p.born} – ${p.died}, retired`;
 
-function page({ title, body, depth }) {
+const linkRow = (links, cls) =>
+  links.length ? `<p class="${cls}">${links.map((l) => `<a href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>` : "";
+
+function page({ title, body, depth, nav }) {
   const base = depth ? "../" : "";
   return `<!doctype html>
 <html lang="en">
@@ -70,67 +82,88 @@ function page({ title, body, depth }) {
 <link rel="stylesheet" href="${base}style.css">
 </head>
 <body>
+<header class="top">
+  <a class="brand" href="${base || "./"}">${esc(NAME)}</a>
+  <nav>${nav}</nav>
+</header>
 <main>
 ${body}
 </main>
+<footer>
+  ${linkRow(CONTACT, "links")}
+</footer>
 </body>
 </html>
 `;
 }
 
 function entry(p) {
-  return `  <li>
+  return `  <li${p.live ? "" : ' class="retired"'}>
     <a href="${p.slug}/">${esc(p.title)}</a>
-    <p class="small">${esc(years(p))}</p>
-    <p class="muted">${esc(p.summary)}</p>
+    <span class="when">${esc(when(p))}</span>
+    <p>${esc(p.summary)}</p>
   </li>`;
 }
 
-function list(heading, items) {
+function section(cat, items) {
   if (!items.length) return "";
-  return `<h2>${esc(heading)}</h2>\n<ul class="list">\n${items.map(entry).join("\n")}\n</ul>`;
+  return `<section id="${cat.key}">
+<h2>${esc(cat.title)}</h2>
+<p class="blurb">${esc(cat.blurb)}</p>
+<ul class="list">
+${items.map(entry).join("\n")}
+</ul>
+</section>`;
 }
 
 function project(p) {
+  const cat = CATEGORIES.find((c) => c.key === p.category);
   const paras = p.paragraphs.map((t) => `<p>${esc(t)}</p>`).join("\n");
-  const links = p.links.length
-    ? `<p class="links">${p.links.map((l) => `<a href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>`
-    : "";
-  return `<p class="small"><a href="../">${esc(NAME)}</a></p>
+  return `<p class="crumb"><a href="../#${cat.key}">${esc(cat.title)}</a></p>
 <h1>${esc(p.title)}</h1>
-<p class="small">${esc(years(p))}</p>
-<p class="muted">${esc(p.summary)}</p>
+<p class="when">${esc(when(p))}</p>
+<p class="lede">${esc(p.summary)}</p>
 ${paras}
-${links}`;
+${linkRow(p.links, "links")}`;
 }
 
 const all = fs
   .readdirSync(SRC)
   .filter((f) => f.endsWith(".md"))
   .map((f) => parse(path.join(SRC, f)));
-const live = all.filter((p) => p.live).sort((a, b) => b.born - a.born || a.title.localeCompare(b.title));
-const past = all.filter((p) => !p.live).sort((a, b) => b.died - a.died || a.title.localeCompare(b.title));
+
+const order = (a, b) =>
+  (b.live ? 1 : 0) - (a.live ? 1 : 0) || (b.live ? b.born - a.born : b.died - a.died) || a.title.localeCompare(b.title);
+
+const navFor = (base) =>
+  CATEGORIES.filter((c) => all.some((p) => p.category === c.key))
+    .map((c) => `<a href="${base}#${c.key}">${esc(c.title)}</a>`)
+    .join("\n");
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 fs.copyFileSync(path.join(ROOT, "style.css"), path.join(OUT, "style.css"));
 fs.writeFileSync(path.join(OUT, ".nojekyll"), "");
 
-const contact = `<p class="links">${CONTACT.map((l) => `<a href="${esc(l.url)}">${esc(l.label)}</a>`).join("\n")}</p>`;
-
 fs.writeFileSync(
   path.join(OUT, "index.html"),
   page({
     title: NAME,
     depth: 0,
-    body: `<h1>${esc(NAME)}</h1>\n<p class="muted">${esc(INTRO)}</p>\n${contact}\n${list("Shipped", live)}\n${list("Shelved", past)}`,
+    nav: navFor(""),
+    body: `<h1>${esc(NAME)}</h1>\n<p class="lede">${esc(INTRO)}</p>\n${CATEGORIES.map((c) =>
+      section(c, all.filter((p) => p.category === c.key).sort(order))
+    ).join("\n")}`,
   })
 );
 
 for (const p of all) {
   const dir = path.join(OUT, p.slug);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, "index.html"), page({ title: `${p.title} · ${NAME}`, depth: 1, body: project(p) }));
+  fs.writeFileSync(
+    path.join(dir, "index.html"),
+    page({ title: `${p.title} · ${NAME}`, depth: 1, nav: navFor("../"), body: project(p) })
+  );
 }
 
-console.log(`built ${live.length} live and ${past.length} past projects into docs/`);
+console.log(`built ${all.filter((p) => p.live).length} live and ${all.filter((p) => !p.live).length} retired projects into docs/`);

@@ -1,6 +1,7 @@
-/* Saekoto — from the Project Graveyard design system tokens */
+/* Saekoto — from the Project Graveyard design system tokens, plus a header, nav and accent bar */
 :root {
   --bg: #ffffff;
+  --bg-2: #f4f4f2;
   --text: #1a1a1a;
   --muted: #666666;
   --link: #1a5fb4;
@@ -14,6 +15,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #141414;
+    --bg-2: #1d1d1d;
     --text: #e6e6e6;
     --muted: #9a9a9a;
     --link: #8ab4f8;
@@ -22,24 +24,46 @@
 }
 
 html { background: var(--bg); color: var(--text); font-family: var(--font-sans); }
-body { margin: 0; }
-main { max-width: 640px; margin: 0 auto; padding: var(--space-4) var(--space-3); }
+body { margin: 0; border-top: 4px solid var(--link); }
 
-h1 { font-size: 28px; line-height: 36px; font-weight: 600; margin: 0 0 var(--space-1); }
-h2 { font-size: 13px; line-height: 18px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin: var(--space-4) 0 0; }
+.top, main, footer { max-width: 720px; margin: 0 auto; padding-left: var(--space-3); padding-right: var(--space-3); box-sizing: border-box; }
+
+.top { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--space-1) var(--space-3); padding-top: var(--space-2); padding-bottom: var(--space-2); border-bottom: 1px solid var(--rule); }
+.brand { font-weight: 700; font-size: 16px; color: var(--text); text-decoration: none; letter-spacing: 0.02em; }
+.top nav { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.top nav a { font-size: 13px; line-height: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); text-decoration: none; padding: var(--space-1) 0; border-bottom: 2px solid transparent; }
+.top nav a:hover, .top nav a:focus-visible { color: var(--text); border-bottom-color: var(--link); }
+
+main { padding-top: var(--space-3); padding-bottom: var(--space-4); }
+
+h1 { font-size: 36px; line-height: 40px; font-weight: 700; letter-spacing: -0.01em; margin: var(--space-3) 0 var(--space-1); }
+.lede { font-size: 18px; line-height: 28px; color: var(--muted); margin: 0 0 var(--space-3); max-width: 560px; }
+.crumb { font-size: 13px; line-height: 18px; margin: 0; }
+.crumb a { color: var(--muted); }
+
+section { margin-top: var(--space-4); }
+h2 { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0 0 var(--space-1); padding-top: var(--space-2); border-top: 3px solid var(--text); }
+.blurb { color: var(--muted); margin: 0 0 var(--space-2); }
+
 p { font-size: 16px; line-height: 24px; margin: 0 0 var(--space-2); }
-.muted { color: var(--muted); }
-.small { font-size: 13px; line-height: 18px; color: var(--muted); margin: 0 0 var(--space-1); }
+.when { font-size: 13px; line-height: 18px; color: var(--muted); display: block; margin: 2px 0 0; }
+.retired .when { font-style: italic; }
 
 a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
 a:hover, a:focus-visible { text-decoration-thickness: 2px; }
 a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
-.list { list-style: none; margin: var(--space-2) 0 0; padding: 0; }
-.list li { padding: var(--space-2) 0; border-top: 1px solid var(--rule); }
+.list { list-style: none; margin: 0; padding: 0; }
+.list li { padding: var(--space-2); margin: 0 calc(-1 * var(--space-2)); border-top: 1px solid var(--rule); }
 .list li:first-child { border-top: 0; }
-.list a { font-size: 18px; line-height: 26px; font-weight: 600; }
+.list li:hover { background: var(--bg-2); }
+.list a { font-size: 19px; line-height: 26px; font-weight: 600; text-decoration: none; }
+.list a:hover, .list a:focus-visible { text-decoration: underline; }
 .list p { margin: var(--space-1) 0 0; }
+.retired a { color: var(--text); }
 
 .links { margin-top: var(--space-2); }
 .links a { margin-right: var(--space-2); }
+
+footer { padding-top: var(--space-2); padding-bottom: var(--space-3); border-top: 1px solid var(--rule); }
+footer .links { margin: 0; }

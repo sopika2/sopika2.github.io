@@ -1,11 +1,10 @@
 ---
 title: Neptune Mod Menu
+category: modding
 born: 2024
-died: 2025
-summary: A mod menu for How To Fish.
+status: live
+summary: An in-game mod menu for How To Fish with toggles the game does not offer.
 ---
-An in-game menu for How To Fish with toggles and tweaks that the game did not offer on its own.
+An in-game menu for How To Fish with toggles and tweaks that the game does not offer on its own.
 
 Published on Nexus Mods under the name saekoto.
-
-Cause of death: stopped updating it.

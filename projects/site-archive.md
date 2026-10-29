@@ -1,5 +1,6 @@
 ---
 title: Site Archive
+category: data
 born: 2026
 status: live
 summary: One command documents a whole website before a redesign: text, screenshots, sitemap, broken links.

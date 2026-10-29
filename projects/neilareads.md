@@ -1,11 +1,12 @@
 ---
 title: NeilaReads
+category: web
 born: 2026
-died: 2026
-summary: A manga and ebook reader bolted onto NeilaReacts.
+status: live
+summary: A self-hosted manga and ebook reader that runs in the browser and installs like an app.
 ---
-The same server, with pages for reading CBZ manga archives and EPUB books in the browser, and a manifest so it could be installed like an app on a phone.
+A small Node server for my own library: CBZ manga archives and EPUB books, read page by page in the browser on any device on the network. A web manifest and a service worker let it be installed on a phone like a native app and keep the reader working while offline.
 
-It died with NeilaReacts. A reader is only useful if the server behind it is on.
+It started as a page inside NeilaReacts and outlived it. I still use it.
 
-Cause of death: its host project died first.
+Node, plain HTML and JavaScript, running on a Linux Mint box at home.

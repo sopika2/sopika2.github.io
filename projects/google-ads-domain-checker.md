@@ -1,5 +1,6 @@
 ---
 title: Google Ads Domain Checker
+category: data
 born: 2026
 status: live
 summary: Check a list of domains for live Google Ads and get one row per domain, on the Apify Store.
