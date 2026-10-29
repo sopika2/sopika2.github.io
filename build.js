@@ -13,7 +13,7 @@
 //   ---
 //   Paragraphs separated by blank lines. No markdown beyond that.
 //
-// Live projects are listed first under "Now", newest first; the rest under "Earlier", newest death first.
+// Live projects are listed first under "Shipped", newest first; the rest under "Shelved", newest death first.
 
 const fs = require("fs");
 const path = require("path");
@@ -123,7 +123,7 @@ fs.writeFileSync(
   page({
     title: NAME,
     depth: 0,
-    body: `<h1>${esc(NAME)}</h1>\n<p class="muted">${esc(INTRO)}</p>\n${contact}\n${list("Now", live)}\n${list("Earlier", past)}`,
+    body: `<h1>${esc(NAME)}</h1>\n<p class="muted">${esc(INTRO)}</p>\n${contact}\n${list("Shipped", live)}\n${list("Shelved", past)}`,
   })
 );
 

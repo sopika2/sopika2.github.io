@@ -1,13 +1,13 @@
 ---
 title: Niijima Network
 born: 2025
-died: 2026
-summary: A set of Persona 5 themed self-hosted sites on niijimasisters.com.
-link: Project-Niijima-landing-page on GitHub | https://github.com/sopika2/Project-Niijima-landing-page
-link: Niijima-Design on GitHub | https://github.com/sopika2/Niijima-Design
+status: live
+summary: A set of self-hosted personal sites on one domain, sharing one design package and a live status page.
+link: landing page on GitHub | https://github.com/sopika2/Project-Niijima-landing-page
+link: design package on GitHub | https://github.com/sopika2/Niijima-Design
 ---
-A home page, a calendar, an archive, a finance tracker and a landing page that listed them all and showed which ones were up. Every site shared one design package and a switch between two Persona 5 characters that changed the whole look.
+A home page, a calendar, an archive and a finance tracker, each on its own subdomain, plus a landing page that lists them all and checks which ones are up. Every site shares one design package of CSS tokens, fonts and components, and a switch between two themes that changes the whole look at once.
 
-The design package was the part I liked most. The sites themselves were never used for anything the apps on my phone did not already do.
+The design package is the part I am most pleased with: one change there restyles every site. The apps are small and built for one user, which is the point.
 
-Cause of death: built for the fun of building, then not used.
+Node and plain HTML, CSS and JavaScript, served from my own machine.

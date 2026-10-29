@@ -5,7 +5,7 @@ A plain portfolio: what I am working on now, then the projects that are finished
 ## Editing
 
 - One file per project in `projects/<slug>.md`. The front matter holds `title`, `born`, `summary`, either `status: live` or `died: <year>`, and any number of `link: label | url` lines. The body is paragraphs separated by blank lines; nothing else is rendered.
-- Live projects are listed under "Now", newest first. The rest go under "Earlier", newest death first.
+- Live projects are listed under "Shipped", newest first. The rest go under "Shelved", newest death first.
 - The name, intro sentence and contact links are at the top of `build.js`.
 - The look comes from `style.css`, which mirrors the Project Graveyard design system.
 
@@ -19,7 +19,7 @@ writes everything into `docs/`. Commit `docs/` along with the source; GitHub Pag
 
 ## Hosting on GitHub Pages
 
-Push this repository to GitHub as `<username>.github.io`, then in Settings → Pages choose "Deploy from a branch", branch `main`, folder `/docs`. The site is live at `https://<username>.github.io/` a minute later. No domain or hosting cost.
+Push this repository to GitHub as `sopika2.github.io`, then in Settings → Pages choose "Deploy from a branch", branch `main`, folder `/docs`. The site is live at `https://sopika2.github.io/` a minute later. No domain or hosting cost.
 
 ## Placeholders to correct
 
